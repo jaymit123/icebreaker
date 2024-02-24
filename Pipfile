@@ -10,6 +10,8 @@ python-dotenv = "*"
 openai = "*"
 langchain-openai = "*"
 google-search-results = "*"
+tweepy = "*"
+flask = "*"
 
 [dev-packages]
 

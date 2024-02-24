@@ -17,13 +17,12 @@ def lookup(name: str) -> str:
             name="Crawl Google for Linkedin Profile Page",
             func=get_profile_url,
             description="useful for when you need to get the linkedin profile",
-
         )
     ]
     agent = initialize_agent(
         tools_for_agent, llm, agent=AgentType.ZERO_SHOT_REACT_DESCRIPTION, verbose=True
     )
-    #giving agent a prompt template with linkedin search name
+    # giving agent a prompt template with linkedin search name
     prompt_template = PromptTemplate(
         template=template, input_variables=["name_of_person"]
     )

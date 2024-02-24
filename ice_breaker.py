@@ -4,21 +4,31 @@ from langchain.chains import LLMChain
 from langchain_openai import ChatOpenAI
 from langchain_core.prompts import PromptTemplate
 from agents.linkedin_lookup_agent import lookup as linkedin_lookup_agent
+from output_parsers import person_intel_parser, PersonIntel
 from third_parties.linkedin import scrape_linkedin_profile
 
-if __name__ == "__main__":
+
+def ice_breaker(name: str) -> [PersonIntel, str]:
     load_dotenv()
-    linkedin_profile_url=linkedin_lookup_agent(name="Jaymit Desai")
+    # call linkedin agent to get url
+    linkedin_profile_url = linkedin_lookup_agent(name=name)
 
     # prompt template with parameters added
     summary_template = """"
     given the information {information} about a person I want you to create:
     1. A Short Summary.
     2. Two Interesting facts about them
+    3. A topic that may interest them
+    4. 2 creative ice breakers to open a conversation with them
+    \n${format_instructions}
     """
     # prompt template has input variables: string with keys we will populate with.
     summary_prompt_template = PromptTemplate(
-        input_variables=["information"], template=summary_template
+        input_variables=["information"],
+        template=summary_template,
+        partial_variables={
+            "format_instructions": person_intel_parser.get_format_instructions()
+        },
     )
 
     # create llm with tempeature 0 - (not creative) and gtp 3.5
@@ -28,4 +38,8 @@ if __name__ == "__main__":
 
     linkedin_data = scrape_linkedin_profile(linkedin_profile_url=linkedin_profile_url)
     res = chain.run(information=linkedin_data)
-    print(res)
+    return [person_intel_parser.parse(res), linkedin_data.get("profile_pic_url")]
+
+
+if __name__ == "__main__":
+    print(ice_breaker("Jaymit Desai"))
