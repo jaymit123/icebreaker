@@ -1,6 +1,15 @@
 # Ice Breaker
 This web application provides information about a person and some ice breakers you can ask them.
 
+Goal of this project to create a real world LLM based application using [Langchain Framework](https://www.langchain.com/)
+
+Technology used:
+- Langchain
+  - Chat based LLM using Chat-GPT 3.5 turbo.
+  - Langchain Agent of ZERO_SHOT_REACT_DESCRIPTION type.
+  - PydanticOutputParser to serialize llm response to Python Object/JSON.
+- ProxyCurl scraping API - Search for LinkedIn accounts by name
+- SerpAPI - Get details for LinkedIn Accounts
 
 
 ## Environment Variables
